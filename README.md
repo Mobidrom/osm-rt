@@ -2,11 +2,11 @@
 
 ## Summary
 
-`osm-rt`[^1] is a lightweight exchange format for dynamic mobility and transportation data to enrich routing networks with temporary, operational, and real-time information.
+`osm-rt`[^1] is a lightweight exchange format for dynamic mobility and transportation data to enrich routing networks with dynamic, operational, temporary and real-time information.
 
 The specification enables routing systems to consume traffic and mobility data from heterogeneous sources and apply them to OpenStreetMap-based routing graphs using either OpenStreetMap identifiers or geometry-based references.
 
-The specification is not carved in stone. We welcome questions, discussions or suggestions which add to the useability of the format. Please open a [Discussion](https://github.com/Mobidrom/osm-rt/discussions) if you think something is missing or could be improved.
+The specification is not finished and nothing is carved in stone. We welcome questions, discussions or suggestions which add to the useability of the format. Please open a [Discussion](https://github.com/Mobidrom/osm-rt/discussions) if you think something is missing or could be improved.
 
 ## Purpose
 
@@ -29,6 +29,14 @@ However, source systems use different location referencing mechanisms, including
 
 `osm-rt` provides a common representation layer for translating such information into routing engine updates.
 
+While the current focus is road traffic and routing, the specification is intentionally generic and may be used to augment OpenStreetMap-based networks with additional temporary or operational information outside the traditional OSM scope, including:
+
+- Events and conferences
+- Exhibitions
+- Temporary access restrictions
+- Mobility service information
+- Other location-dependent, time-limited data
+
 ## Design Goals
 
 - Lightweight and implementation-friendly
@@ -37,44 +45,30 @@ However, source systems use different location referencing mechanisms, including
 - Reuse established OSM key/value semantics where possible
 - Enable efficient exchange of dynamic network information
 
-The format extends concepts known from **OsmChange** by allowing changes to be defined through geometries rather than requiring pre-mapped OSM entities.
+The format extends concepts known from [**OsmChange**](https://wiki.openstreetmap.org/wiki/OsmChange) by allowing changes to be defined through geometries rather than requiring pre-mapped OSM entities.
 
 ## Dynamic Attributes
 
-Permanent infrastructure properties should continue to use standard OpenStreetMap tags. `osm-rt` introduces additional attributes for operational and time-dependent data.
+Permanent infrastructure properties should continue to use standard OpenStreetMap tags. `osm-rt` might introduce additional attributes for operational and time-dependent data. Examples of information that is currently not covered by existing OSM tags are
 
-| Key                    | Description                                                                 |
-| ---------------------- | --------------------------------------------------------------------------- |
-| `current_speed`        | Current observed speed derived from traffic data or Floating Car Data (FCD) |
-| `average_speed_hourly` | Historical average speed by weekday and hour                                |
-| `average_speed_daily`  | Historical average speed aggregated per day                                 |
-| `travel_time`          | Estimated traversal time                                                    |
-| `congestion_level`     | Normalized traffic congestion indicator                                     |
-| `traffic_state`        | Traffic condition (e.g. `free_flow`, `dense`, `stop_and_go`, `blocked`)     |
+- Current observed speed derived from traffic data or Floating Car Data (FCD)
+- Historical average speed by weekday and hour or day
+- Predicted speed
+- Estimated traversal time
+- Normalized traffic congestion indicator / "Level of Service"
+- Traffic condition (e.g. `free_flow`, `dense`, `stop_and_go`, `blocked`)
 
-These attributes are intended to complement existing OSM tags rather than replace them.
-
-# Temporal Validity
+## Temporal Validity
 
 Dynamic attributes may include validity periods using the OSM [`opening_hours syntax`](https://wiki.openstreetmap.org/wiki/Key:opening_hours) or compatible temporal constraints.
 
 Consumers should treat `osm-rt` attributes as transient observations and operational conditions, not as persistent network properties.
 
-## Future Scope & Developments
-
-While the current focus is road traffic and routing, the specification is intentionally generic and may be used to augment OpenStreetMap-based networks with additional temporary or operational information outside the traditional OSM scope, including:
-
-    Events and conferences
-    Exhibitions
-    Temporary access restrictions
-    Mobility service information
-    Other location-dependent, time-limited data
-
 ## Known implementations
 
-| Producer                                    | Consumer                                       | Type of Data                         |
-| ------------------------------------------- | ---------------------------------------------- | ------------------------------------ |
+|                  Producer                   |                    Consumer                    |             Type of Data             |
+| :-----------------------------------------: | :--------------------------------------------: | :----------------------------------: |
 | [**MOBIDROM**](https://github.com/Mobidrom) | [**MOTIS**](https://github.com/motis-project/) | Construction sites and road closures |
-| [**MOBIDROM**](https://github.com/Mobidrom) | [**MOTIS**](https://github.com/motis-project/) | INRIX Floating Car Data (planned)    |
+| [**MOBIDROM**](https://github.com/Mobidrom) | [**MOTIS**](https://github.com/motis-project/) |  INRIX Floating Car Data (planned)   |
 
-[^1]: The name is derived from the popular formats for public transport timetable and realtime information `GTFS`and `GTFS-RT`
+[^1]: The name is derived from the popular formats for public transport timetable and realtime information `GTFS` and `GTFS-RT`
