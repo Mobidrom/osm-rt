@@ -3,36 +3,6 @@ syntax = "proto2";
 option java_package = "org.motisproject.osmrt";
 package osm_rt;
 
-/* OSM-RT Binary format
-
-The purpose of this format is to enable a set of
-real-time layers of additional data on top of OSM data.
-This dynamic data can't or shouldn't be in static OSM data, e.g.:
-- The data might be too dynamic like floating car data (FCD),
-  temporary construction sites, dynamic traffic management, etc.
-- The data might be coming from another data source that is
-  incompatible with OSM (e.g. coming from another system)
-
-Similar to other data standards like CIFS (by Waze) or DATEX II,
-OSM-RT uses the of geometry to reference entities so other systems
-do not have to match their data to OSM entities.
-It's the task of OSM-RT consumers to match this the geometry to OSM data.
-
-OSM-RT is not a delta update stream. A OSM-RT feed update will overwrite
-all preceding realtime information for the feed. Thus each update is
-expected to provide a full snapshot of all known realtime information.
-
-OSM-RT is additive to the baseline OSM file. Every tag previously
-attached to the matched OSM entity will stay valid unless it is
-explicitely overwritten by a tag in the update message.
-This avoids that data producing systems would have to know
-all existing tags in the specific OSM snapshot the consuming system uses.
-
-A data consumer (like a routing engine) can consume to multiple
-OSM-RT endpoints and internally combine the consumed updates.
-
-*/
-
 message FeedMessage {
   // Metadata about this feed and feed message.
   required FeedHeader header = 1;
