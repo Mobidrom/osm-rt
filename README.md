@@ -2,7 +2,7 @@
 
 ## Summary
 
-`osm-rt`[^1] is a lightweight exchange format for dynamic mobility and transportation data used by [**MOBIDROM**](https://github.com/Mobidrom) and [**MOTIS**](https://github.com/motis-project/) to enrich routing networks with temporary, operational, and real-time information.
+`osm-rt`[^1] is a lightweight exchange format for dynamic mobility and transportation data to enrich routing networks with temporary, operational, and real-time information.
 
 The specification enables routing systems to consume traffic and mobility data from heterogeneous sources and apply them to OpenStreetMap-based routing graphs using either OpenStreetMap identifiers or geometry-based references.
 
@@ -69,5 +69,12 @@ While the current focus is road traffic and routing, the specification is intent
     Temporary access restrictions
     Mobility service information
     Other location-dependent, time-limited data
+
+## Known implementations
+
+| Producer                                    | Consumer                                       | Type of Data                         |
+| ------------------------------------------- | ---------------------------------------------- | ------------------------------------ |
+| [**MOBIDROM**](https://github.com/Mobidrom) | [**MOTIS**](https://github.com/motis-project/) | Construction sites and road closures |
+| [**MOBIDROM**](https://github.com/Mobidrom) | [**MOTIS**](https://github.com/motis-project/) | INRIX Floating Car Data (planned)    |
 
 [^1]: The name is derived from the popular formats for public transport timetable and realtime information `GTFS`and `GTFS-RT`
