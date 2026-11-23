@@ -2,45 +2,29 @@
 
 ## Summary
 
-`osm-rt`[^1] is a lightweight exchange format for dynamic mobility and transportation data to enrich routing networks with dynamic, operational, temporary and real-time information.
+OSM-RT[^1] is a lightweight exchange format which enables a set of (primarily) dynamic ("real-time") layers of additional data on top of OSM data.
 
-The specification enables routing systems to consume traffic and mobility data from heterogeneous sources and apply them to OpenStreetMap-based routing graphs using either OpenStreetMap identifiers or geometry-based references.
+There is relelvant data which cannot or should not be added to static OSM data for various reasons:
+
+- The data is too dynamic like floating car data (FCD), temporary construction sites, dynamic traffic management, etc.
+- The data is dealing with things too temporary for static OSM like meetings, events or exhibitions
+- The data is coming from another data source that is not directly compatible with OSM (e.g. coming from another system)
 
 The specification is not finished and nothing is carved in stone. We welcome questions, discussions or suggestions which add to the useability of the format. Please open a [Discussion](https://github.com/Mobidrom/osm-rt/discussions) if you think something is missing or could be improved.
 
-## Purpose
+## Key features
 
-Routing engines increasingly depend on dynamic information such as:
+- Similar to other data standards like CIFS (by Waze) or DATEX-II, OSM-RT does not rely on OSM-IDs but allows the use of a geometry to reference entities. Thus producers do not have to match their data to OSM entities and do not need prior knowledge about the specific OSM snapshot the consuming system is using. It's the task of OSM-RT consumers to match the geometry to OSM data.
 
-- Road works
-- Detours
-- Traffic congestion
-- Temporary speed restrictions
-- Incidents and closures
-- Other events affecting network accessibility or travel times
+- OSM-RT **is not a delta update stream.** An OSM-RT feed update will overwrite all preceding realtime information for the feed. Thus each update is expected to provide a full snapshot of all known realtime information.
 
-However, source systems use different location referencing mechanisms, including:
+- OSM-RT **is additive to the baseline OSM file.** Every tag previously attached to the matched OSM entity will stay valid unless it is explicitely overwritten by a tag in the update message. This avoids that data producing systems need to know all existing tags in the specific OSM snapshot the consuming system uses.
 
-- OpenStreetMap node and way IDs
-- DATEX II geometries (GML Position Lists)
-- OpenLR references
-- GeoJSON geometries (`LineString`, `MultiLineString`, `FeatureCollection`)
-- Other linear or area-based geospatial references
-
-`osm-rt` provides a common representation layer for translating such information into routing engine updates.
-
-While the current focus is road traffic and routing, the specification is intentionally generic and may be used to augment OpenStreetMap-based networks with additional temporary or operational information outside the traditional OSM scope, including:
-
-- Events and conferences
-- Exhibitions
-- Temporary access restrictions
-- Mobility service information
-- Other location-dependent, time-limited data
+A data consumer (like a routing engine) can subscribe to and consume multiple OSM-RT endpoints and internally combine the consumed updates.
 
 ## Design Goals
 
 - Lightweight and implementation-friendly
-- Compatible with OSM-based routing engines
 - Support both OSM entity references and geometry-based references
 - Reuse established OSM key/value semantics where possible
 - Enable efficient exchange of dynamic network information
@@ -49,7 +33,7 @@ The format extends concepts known from [**OsmChange**](https://wiki.openstreetma
 
 ## Dynamic Attributes
 
-Permanent infrastructure properties should continue to use standard OpenStreetMap tags. `osm-rt` might introduce additional attributes for operational and time-dependent data. Examples of information that is currently not covered by existing OSM tags are
+Permanent infrastructure properties (like road closures, construction-sites, opening_hours for time information) should continue to use standard (static) OpenStreetMap tags. OSM-RT might introduce additional attributes for operational and time-dependent data. Examples of information that is currently not covered by existing OSM tags are
 
 - Current observed speed derived from traffic data or Floating Car Data (FCD)
 - Historical average speed by weekday and hour or day
@@ -60,9 +44,7 @@ Permanent infrastructure properties should continue to use standard OpenStreetMa
 
 ## Temporal Validity
 
-Dynamic attributes may include validity periods using the OSM [`opening_hours syntax`](https://wiki.openstreetmap.org/wiki/Key:opening_hours) or compatible temporal constraints.
-
-Consumers should treat `osm-rt` attributes as transient observations and operational conditions, not as persistent network properties.
+While consumers should generally treat OSM-RT attributes as transient observations and operational conditions there might be cases in which an OSM-RT feed augments static information that is not yet included in static OpenStreetMap data.
 
 ## Known implementations
 
@@ -71,4 +53,4 @@ Consumers should treat `osm-rt` attributes as transient observations and operati
 | [**MOBIDROM**](https://github.com/Mobidrom) | [**MOTIS**](https://github.com/motis-project/) | Construction sites and road closures |
 | [**MOBIDROM**](https://github.com/Mobidrom) | [**MOTIS**](https://github.com/motis-project/) |  INRIX Floating Car Data (planned)   |
 
-[^1]: The name is derived from the popular formats for public transport timetable and realtime information `GTFS` and `GTFS-RT`
+[^1]: The name is derived from the popular formats for public transport timetable and realtime information GTFS and GTFS-RT
