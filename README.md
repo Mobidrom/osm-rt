@@ -1,16 +1,13 @@
-# osm-rt Specification
+# OSM-RT Specification
 
-## Summary
+The OSM-RT specification is an open standard which enables layers of additional data on top of OpenStreetMap data.
 
-OSM-RT[^1] is a lightweight exchange format which enables a set of (primarily) dynamic ("real-time") layers of additional data on top of OSM data.
-
-There is relelvant data which cannot or should not be added to static OSM data for various reasons:
+There is relevant data which cannot or should not be added to static OSM data for various reasons:
 
 - The data is too dynamic like floating car data (FCD), temporary construction sites, dynamic traffic management, etc.
 - The data is dealing with things too temporary for static OSM like meetings, events or exhibitions
 - The data is coming from another data source that is not directly compatible with OSM (e.g. coming from another system)
 
-The specification is not finished and nothing is carved in stone. We welcome questions, discussions or suggestions which add to the useability of the format. Please open a [Discussion](https://github.com/Mobidrom/osm-rt/discussions) if you think something is missing or could be improved.
 
 ## Key features
 
@@ -22,6 +19,7 @@ The specification is not finished and nothing is carved in stone. We welcome que
 
 A data consumer (like a routing engine) can subscribe to and consume multiple OSM-RT endpoints and internally combine the consumed updates.
 
+
 ## Design Goals
 
 - Lightweight and implementation-friendly
@@ -30,6 +28,7 @@ A data consumer (like a routing engine) can subscribe to and consume multiple OS
 - Enable efficient exchange of dynamic network information
 
 The format extends concepts known from [**OsmChange**](https://wiki.openstreetmap.org/wiki/OsmChange) by allowing changes to be defined through geometries rather than requiring pre-mapped OSM entities.
+
 
 ## Dynamic Attributes
 
@@ -42,15 +41,20 @@ Permanent infrastructure properties (like road closures, construction-sites, ope
 - Normalized traffic congestion indicator / "Level of Service"
 - Traffic condition (e.g. `free_flow`, `dense`, `stop_and_go`, `blocked`)
 
+
 ## Temporal Validity
 
 While consumers should generally treat OSM-RT attributes as transient observations and operational conditions there might be cases in which an OSM-RT feed augments static information that is not yet included in static OpenStreetMap data.
 
-## Known implementations
+
+## Contributing
+
+The specification is not finished and nothing is carved in stone. We welcome questions, discussions or suggestions which add to the useability of the format. Please open a [Discussion](https://github.com/Mobidrom/osm-rt/discussions) if you think something is missing or could be improved.
+
+
+## Known Implementations
 
 |                  Producer                   |                    Consumer                    |             Type of Data             |
 | :-----------------------------------------: | :--------------------------------------------: | :----------------------------------: |
 | [**MOBIDROM**](https://github.com/Mobidrom) | [**MOTIS**](https://github.com/motis-project/) | Construction sites and road closures |
 | [**MOBIDROM**](https://github.com/Mobidrom) | [**MOTIS**](https://github.com/motis-project/) |  INRIX Floating Car Data (planned)   |
-
-[^1]: The name is derived from the popular formats for public transport timetable and realtime information GTFS and GTFS-RT
