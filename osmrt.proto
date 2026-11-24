@@ -61,7 +61,7 @@ message StringTable {
 // ## Hint Keys
 //
 // Keys prefixed with `hint:` should be interpreted as a matching hint,
-// requirering the data consumer to prioritize OSM objects that carry the
+// requiring the data consumer to prioritize OSM objects that carry the
 // same key+value tag with the `hint:` prefix stripped.
 //
 // Examples:
