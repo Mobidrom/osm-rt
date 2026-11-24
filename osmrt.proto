@@ -35,18 +35,51 @@ message FeedHeader {
 
 // String table, contains the common strings in each block.
 //
-// Note that we reserve index '0' as a delimiter, so the entry at that
-// index in the table is ALWAYS blank and unused.
+// Index '0' is reserved: the entry at that index is ALWAYS blank.
+// It must not be used as a key. Used as a value, it instructs the
+// consumer to remove the key from the matched OSM object.
 message StringTable {
    repeated bytes s = 1;
 }
 
-// Main Update:
-// Reference nodes (single lat/lon pair) or ways (multiple lat/lon pairs).
-// This is a instruction to the data consumer to:
+// # FeedEntity:
+//
+// Reference exactly one:
+// - nodes (single lat/lon pair) or ways (multiple lat/lon pairs).
+// - OpenLR buffer
+// Both at the same time (lat/lon pairs + OpenLR) is not undefined.
+//
+// If the geometry spans several ways, the update should be applied to all of them.
+//
+// This is an instruction to the data consumer to:
 // - match the geometry to a OSM object
 // - overwrite the tags of the matched OSM object for overlapping tags
+// - delete the tags of the matched OSM object where key is empty index '0'
 // - extend the tags of the matched OSM object for non-overlapping tags
+//
+//
+// ## Hint Keys
+//
+// Keys prefixed with `hint:` should be interpreted as a matching hint,
+// requiring the data consumer to prioritize OSM objects that carry the
+// same key+value tag with the `hint:` prefix stripped.
+//
+// Examples:
+//   `hint:highway=motorway` + `hint:ref=A 5`
+//    => matches with `highway:motorway` and `ref=A 5` should be prioritized
+//
+// Note that the data producer might have different functional road classes
+// and does not necessarily distinguish between for example `motorway_link`
+// and `motorway`. Also, `A 5` might be spelled differently (e.g. `A5`) by the
+// data producer.
+// Therefore, consumers should implement a robust matching of hints.
+// An more precise matching mechanism might be added to OSM-RT in the future.
+//
+// ID hints:
+// `hint:id` should try to match the OSM object with the given ID directly.
+// Since the producer might have a different version of the OSM dataset, the ID
+// might not match anymore. Therefore, `hint:id` should still be combined with
+// other hints and correct geometry if possible.
 message FeedEntity {
    required int64 id = 1;
 
@@ -57,4 +90,22 @@ message FeedEntity {
    // Geometry
    repeated sint64 lat = 8 [packed = true]; // DELTA coded
    repeated sint64 lon = 9 [packed = true]; // DELTA coded
+
+   // OpenLR location reference in the binary format
+   // (raw bytes, not base64).
+   optional bytes openlr = 10;
+}
+
+// Relations allow to update for example turn restrictions for updated
+// traffic guidance in case of construction sites.
+message Relation {
+  required int64 id = 1;
+
+   // OSM tagging, references shared string table entries
+   repeated uint32 keys = 2 [packed = true];
+   repeated uint32 vals = 3 [packed = true];
+
+   // Parallel arrays
+   repeated uint32 roles_sid = 8 [packed = true]; // string table index: from/via/to/etc
+   repeated int64  memids    = 9 [packed = true]; // references FeedEntity::id
 }
