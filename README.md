@@ -9,7 +9,7 @@ There is relevant data which cannot or should not be added to static OSM data fo
 - The data is coming from another data source that is not directly compatible with OSM (e.g. coming from another system)
 
 
-## Key features
+## Key Features
 
 - Similar to other data standards like CIFS (by Waze) or DATEX-II, OSM-RT does not rely on OSM-IDs but allows the use of a geometry to reference entities. Thus producers do not have to match their data to OSM entities and do not need prior knowledge about the specific OSM snapshot the consuming system is using. It's the task of OSM-RT consumers to match the geometry to OSM data.
 
