@@ -49,7 +49,7 @@ While consumers should generally treat OSM-RT attributes as transient observatio
 
 ## Contributing
 
-The specification is not finished and nothing is carved in stone. We welcome questions, discussions or suggestions which add to the useability of the format. Please open a [Discussion](https://github.com/Mobidrom/osm-rt/discussions) if you think something is missing or could be improved.
+The specification is not finished and nothing is carved in stone. We welcome questions, discussions or suggestions which add to the useability of the format. Please open an [Issue](https://github.com/Mobidrom/osm-rt/issues) if you think something is missing or could be improved.
 
 
 ## Known Implementations
