@@ -12,6 +12,9 @@ message FeedMessage {
 
   // Contents of the feed.
   repeated FeedEntity entity = 2;
+
+  // Relations between entities of this feed (e.g. turn restrictions).
+  repeated Relation relation = 4;
 }
 
 // Metadata about a feed, included in feed messages.
