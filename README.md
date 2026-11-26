@@ -47,7 +47,7 @@ While consumers should generally treat OSM-RT attributes as transient observatio
 - The server hosting OSM-RT data SHOULD be configured to correctly report the file modification date which allows consumers to leverage the [If-Modified-Since HTTP header](https://www.rfc-editor.org/info/rfc7232/#section-3.3). This allows producers and consumers to avoid transferring feed contents that haven't changed and saves bandwith and ressurces and is especially important for feeds with a short `update_interval`
 - Feeds SHOULD provide protocol buffer-encoded feed content by default when queried via an HTTP request at the given URL - consumers should not need to define special HTTP accept headers to receive protocol-buffer encoded content.
 - Feeds SHOULD use HTTPS instead of HTTP (without encryption) to ensure feed integrity.
-- Feeds SHOULD set the `last_updated` and `update_interval` fields in order to further increase resource efficiency for transmission of data and avoid unnecessary high polling rates
+- Feeds MUST set the `last_updated` and `update_interval` fields in order to increase resource efficiency for transmission of data and avoid unnecessary high polling rates
 
 ## Contributing
 
