@@ -23,12 +23,16 @@ message FeedHeader {
   // Oldest feed specification version this message is still compatible with.
   // Consumers implementing any version >= compat_version can read this
   // message. The current value is 1.
-  required uint32 compat_version = 4;
+  required uint32 compat_version = 2;
 
   // This timestamp identifies the moment when the content of this feed has been
   // created (in server time). In POSIX time (i.e., number of seconds since
   // January 1st 1970 00:00:00 UTC).
-  optional uint64 timestamp = 3;
+  required uint64 last_updated = 3;
+
+  // The update_interval defines a number of seconds after which the data is
+  // expected to be updated on the producer side. 
+  required uint32 update_interval = 4;
 
   extensions 1000 to 1999;
 }
